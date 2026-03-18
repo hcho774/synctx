@@ -53,10 +53,9 @@ const stateManager2 = new SynctManager<UserState>(
 );
 
 // Register async action
-const fetchUserAction: AsyncAction<UserState, { name: string; email: string }> = {
+const fetchUserAction: AsyncAction<UserState, { name: string; email: string }, [string]> = {
   name: 'fetchUser',
-  handler: async (state, ...args: any[]) => {
-    const userId = args[0] as string;
+  handler: async (state, userId) => {
     // Simulate API call
     await new Promise(resolve => setTimeout(resolve, 1000));
     return { name: 'Jane Doe', email: 'jane@example.com' };
