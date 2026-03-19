@@ -34,15 +34,22 @@ import type { TachyoStateEvent } from '../types';
  * ```
  */
 export function useTachyo<T extends object>(
-  initialState: T,
+  storeOrInitialState: TachyoManager<T> | T,
   options?: import('../types').TachyoOptions<T>
 ) {
   const managerRef = useRef<TachyoManager<T> | null>(null);
+  const isGlobalStore = useRef(false);
   const mountedRef = useRef(false);
   const renderRef = useRef(0);
   
   if (!managerRef.current) {
-    managerRef.current = new TachyoManager(initialState, options);
+    if (storeOrInitialState instanceof TachyoManager) {
+      managerRef.current = storeOrInitialState;
+      isGlobalStore.current = true;
+    } else {
+      managerRef.current = new TachyoManager(storeOrInitialState as T, options);
+      isGlobalStore.current = false;
+    }
   }
 
   const manager = managerRef.current;
@@ -114,11 +121,13 @@ export function useTachyo<T extends object>(
     }
   }, []);
 
-  // Cleanup on unmount — use destroy() for full memory management
+  // Cleanup on unmount — use destroy() ONLY for locally created stores
   useEffect(() => {
     return () => {
       mountedRef.current = false;
-      managerRef.current?.destroy();
+      if (!isGlobalStore.current) {
+        managerRef.current?.destroy();
+      }
     };
   }, []);
 

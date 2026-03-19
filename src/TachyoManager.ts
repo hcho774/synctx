@@ -176,12 +176,12 @@ export class TachyoManager<T extends object> extends SimpleEventEmitter {
   }
 
   /**
-   * Get current state (read-only copy)
-   * This is the ONLY place that creates a defensive copy—internal paths
-   * use direct references for speed (matching Zustand / Redux pattern).
+   * Get current state
+   * Returns a direct reference to state (matching Zustand / Redux pattern).
+   * Vital for React useSyncExternalStore reference equality requirements.
    */
   public getState(): T {
-    return { ...this._state } as T;
+    return this._state;
   }
 
   /**
