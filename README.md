@@ -8,6 +8,8 @@
 > **Enterprise-grade features at vanilla speeds.**
 > `tachyo` provides built-in undo/redo, change path tracking, native Chrome DevTools bridging, and extreme micro-optimizations in a single lightweight package.
 
+**[🕹️ Try the Interactive Demo & DevTools Dashboard](https://tachyo.vercel.app/)**
+
 ## Installation
 
 ```bash
