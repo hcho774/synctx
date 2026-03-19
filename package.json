@@ -4,13 +4,23 @@
   "description": "Type-safe state management with undo/redo, async tracking, and React integration",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./react": {
+      "types": "./dist/react/index.d.ts",
+      "default": "./dist/react/index.js"
+    }
+  },
   "files": [
     "dist",
     "README.md",
     "LICENSE"
   ],
   "scripts": {
-    "build": "tsc",
+    "build": "rm -rf dist && tsc",
     "build:prod": "NODE_ENV=production tsc",
     "dev": "tsc --watch",
     "test": "ts-node test/quick-test.ts",
