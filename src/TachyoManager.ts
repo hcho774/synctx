@@ -780,7 +780,7 @@ export class TachyoManager<T extends object> extends SimpleEventEmitter {
     const next = (updatedState: Partial<T> | T) => {
       if (index < this._middleware.length) {
         const middleware = this._middleware[index++];
-        const result = middleware(this._state, next, actionContext);
+        const result = middleware(updatedState as T, next, actionContext);
         if (result instanceof Promise) {
           result.catch(error => {
             this.emit('middleware:error', { error, actionContext });
