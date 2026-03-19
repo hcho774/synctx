@@ -1,5 +1,5 @@
 /**
- * Synct - Type-safe state management with undo/redo and event tracking
+ * Tachyo - Type-safe state management with undo/redo and event tracking
  */
 
 /**
@@ -35,7 +35,7 @@ export interface ActionContext {
 /**
  * State change event interface with full tracking
  */
-export interface SynctStateEvent<T> {
+export interface TachyoStateEvent<T> {
   previousState: T;
   currentState: T;
   property?: string;
@@ -67,7 +67,7 @@ export interface SnapshotMetadata {
 /**
  * State update metadata (for setState)
  */
-export interface SynctUpdateMetadata {
+export interface TachyoUpdateMetadata {
   action?: string;
   description?: string;
 }
@@ -101,9 +101,9 @@ export interface AsyncAction<T, R = unknown, Args extends unknown[] = unknown[]>
 }
 
 /**
- * Synct configuration options
+ * Tachyo configuration options
  */
-export interface SynctOptions<T = unknown> {
+export interface TachyoOptions<T = unknown> {
   /**
    * Maximum number of history entries to keep (for undo/redo)
    * Default: 50
@@ -155,7 +155,7 @@ export interface SynctOptions<T = unknown> {
 /**
  * Subscription callback type
  */
-export type SynctSubscription<T> = (state: T, event: SynctStateEvent<T>) => void;
+export type TachyoSubscription<T> = (state: T, event: TachyoStateEvent<T>) => void;
 
 /**
  * Property change callback type

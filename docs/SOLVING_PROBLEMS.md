@@ -1,8 +1,8 @@
-# synct: Solving the 3 Biggest Problems
+# tachyo: Solving the 3 Biggest Problems
 
 ## Problem Analysis and Solutions
 
-This document explains how synct solves the 3 main problems that users face with Event-based State Management libraries.
+This document explains how tachyo solves the 3 main problems that users face with Event-based State Management libraries.
 
 ---
 
@@ -13,11 +13,11 @@ This document explains how synct solves the 3 main problems that users face with
 - Difficult to trace the cause of changes
 - Must manually find change paths when debugging
 
-### synct's Solution
+### tachyo's Solution
 
 #### 1. Change Path Tracking
 ```typescript
-const stateManager = new SynctManager<UserState>(initialState, {
+const stateManager = new TachyoManager<UserState>(initialState, {
   enableChangePathTracking: true, // ✅ Automatic path tracking
 });
 
@@ -65,7 +65,7 @@ interface FormState {
   };
 }
 
-const stateManager = new SynctManager<FormState>({...}, {
+const stateManager = new TachyoManager<FormState>({...}, {
   enableChangePathTracking: true,
   enableStackTrace: true,
 });
@@ -95,7 +95,7 @@ stateManager.setState({
 - Lack of context when errors occur
 - Cannot track when multiple async operations run simultaneously
 
-### synct's Solution
+### tachyo's Solution
 
 #### 1. Async Action Registration
 ```typescript
@@ -185,7 +185,7 @@ console.log('User fetch:', {
 - Libraries that only support specific patterns are hard for other teams to use
 - Must fork the library to add custom logic
 
-### synct's Solution
+### tachyo's Solution
 
 #### 1. Middleware System
 ```typescript
@@ -212,7 +212,7 @@ const analyticsMiddleware: Middleware<UserState> = (state, next, action) => {
 };
 
 // Apply all patterns
-const stateManager = new SynctManager(initialState, {
+const stateManager = new TachyoManager(initialState, {
   middleware: [
     loggingMiddleware,
     validationMiddleware,
@@ -294,7 +294,7 @@ const teamCMiddleware = [
 
 ## Conclusion
 
-synct solves all 3 major problems with Event-based State Management:
+tachyo solves all 3 major problems with Event-based State Management:
 
 1. ✅ **State Change Path Tracking** - Change path, action context, action chain
 2. ✅ **Async Flow Debugging** - Async action tracking, state snapshots, error context

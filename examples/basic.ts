@@ -1,7 +1,7 @@
 /**
- * Basic Synct usage example
+ * Basic Tachyo usage example
  */
-import { SynctManager } from '../src/SynctManager';
+import { TachyoManager } from '../src/TachyoManager';
 
 interface UserState {
   name: string;
@@ -10,7 +10,7 @@ interface UserState {
 }
 
 // Create state manager
-const stateManager = new SynctManager<UserState>({
+const stateManager = new TachyoManager<UserState>({
   name: 'John Doe',
   age: 30,
   email: 'john@example.com'

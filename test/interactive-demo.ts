@@ -1,11 +1,11 @@
 /**
- * Interactive Demo - Play with Synct in real-time!
+ * Interactive Demo - Play with Tachyo in real-time!
  * 
  * Usage: npx ts-node test/interactive-demo.ts
  */
 
 import * as readline from 'readline';
-import { SynctManager } from '../src/SynctManager';
+import { TachyoManager } from '../src/TachyoManager';
 
 interface DemoState {
   name: string;
@@ -19,8 +19,8 @@ const rl = readline.createInterface({
   output: process.stdout,
 });
 
-const stateManager = new SynctManager<DemoState>({
-  name: 'Synct',
+const stateManager = new TachyoManager<DemoState>({
+  name: 'Tachyo',
   age: 0,
   items: [],
   count: 0,
@@ -37,7 +37,7 @@ stateManager.subscribe((state, event) => {
   console.log(`   Action: ${event.actionContext?.name || 'N/A'}`);
 });
 
-console.log('🎮 Synct Interactive Demo\n');
+console.log('🎮 Tachyo Interactive Demo\n');
 console.log('Commands:');
 console.log('  set name <value>  - Set name');
 console.log('  set age <number>  - Set age');

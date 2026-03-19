@@ -6,7 +6,7 @@
  * 2. Use a bundler like Vite or Create React App
  */
 import React from 'react';
-import { useSynct } from '../src/react/useSynct';
+import { useTachyo } from '../src/react/useTachyo';
 
 interface CounterState {
   count: number;
@@ -14,7 +14,7 @@ interface CounterState {
 }
 
 function CounterApp() {
-  const { state, setState, undo, redo, canUndo, canRedo } = useSynct<CounterState>({
+  const { state, setState, undo, redo, canUndo, canRedo } = useTachyo<CounterState>({
     count: 0,
     step: 1
   });

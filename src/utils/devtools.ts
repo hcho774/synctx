@@ -1,5 +1,5 @@
 /**
- * Redux DevTools Extension integration for Synct
+ * Redux DevTools Extension integration for Tachyo
  * Automatically connects to Redux DevTools Extension when available
  */
 
@@ -37,13 +37,13 @@ declare global {
   }
 }
 
-export class SynctDevTools {
+export class TachyoDevTools {
   private devToolsExtension: ReduxDevToolsConnection | null = null;
   private instanceId: string;
   private isEnabled: boolean = false;
 
   constructor() {
-    this.instanceId = `synct_${Date.now()}`;
+    this.instanceId = `tachyo_${Date.now()}`;
     this.connect();
   }
 
@@ -65,7 +65,7 @@ export class SynctDevTools {
     if (extension) {
       try {
         this.devToolsExtension = extension.connect({
-          name: 'Synct',
+          name: 'Tachyo',
           instanceId: this.instanceId,
         });
 
@@ -81,7 +81,7 @@ export class SynctDevTools {
         // Send initial state
         this.devToolsExtension.init({});
       } catch (error) {
-        console.warn('Synct: Failed to connect to Redux DevTools', error);
+        console.warn('Tachyo: Failed to connect to Redux DevTools', error);
       }
     }
   }
@@ -90,11 +90,11 @@ export class SynctDevTools {
    * Handle DevTools actions (time-travel, jump to state, etc.)
    */
   private handleDevToolsAction(message: DevToolsMessage): void {
-    // This will be handled by SynctManager if needed
+    // This will be handled by TachyoManager if needed
     // For now, we just log it
     if (message.payload?.type === 'JUMP_TO_STATE' || message.payload?.type === 'JUMP_TO_ACTION') {
-      // Time-travel debugging - would need to be handled by SynctManager
-      console.log('Synct: DevTools time-travel action', message);
+      // Time-travel debugging - would need to be handled by TachyoManager
+      console.log('Tachyo: DevTools time-travel action', message);
     }
   }
 
@@ -115,7 +115,7 @@ export class SynctDevTools {
         state
       );
     } catch (error) {
-      console.warn('Synct: Failed to send to DevTools', error);
+      console.warn('Tachyo: Failed to send to DevTools', error);
     }
   }
 
@@ -143,4 +143,4 @@ export class SynctDevTools {
 }
 
 // Singleton instance
-export const devTools = new SynctDevTools();
+export const devTools = new TachyoDevTools();

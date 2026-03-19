@@ -1,19 +1,19 @@
 /**
- * Synct - Type-safe state management with undo/redo and event tracking
+ * Tachyo - Type-safe state management with undo/redo and event tracking
  *
  * A powerful state management library featuring automatic undo/redo,
  * event tracking, async debugging, and React integration.
  */
 
 // Named exports for better tree-shaking
-export { SynctManager } from './SynctManager';
+export { TachyoManager } from './TachyoManager';
 
 // Type exports (no runtime code)
 export type {
-  SynctOptions,
-  SynctStateEvent,
-  SynctSubscription,
-  SynctUpdateMetadata,
+  TachyoOptions,
+  TachyoStateEvent,
+  TachyoSubscription,
+  TachyoUpdateMetadata,
   CollectionChangedEvent,
   CollectionAction,
   HistoryEntry,
@@ -31,8 +31,8 @@ export { calculateChangePath, formatChangePath } from './utils/changeTracker';
 export { AsyncActionTracker } from './utils/asyncTracker';
 
 // React integration (separate bundle)
-export { useSynct, useSynctProperty } from './react/useSynct';
+export { useTachyo, useTachyoProperty } from './react/useTachyo';
 
 // DevTools
-export { devTools, SynctDevTools } from './utils/devtools';
+export { devTools, TachyoDevTools } from './utils/devtools';
 export type { DevToolsMessage } from './utils/devtools';

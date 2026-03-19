@@ -1,16 +1,16 @@
 // Types are always imported (no impact on bundle size)
 import { SimpleEventEmitter } from './utils/EventEmitter';
 import type {
-  SynctOptions,
-  SynctStateEvent,
+  TachyoOptions,
+  TachyoStateEvent,
   HistoryEntry,
   SnapshotMetadata,
-  SynctSubscription,
+  TachyoSubscription,
   PropertyChangeCallback,
   ActionContext,
   Middleware,
   AsyncAction,
-  SynctUpdateMetadata,
+  TachyoUpdateMetadata,
 } from './types';
 
 // Type imports (not included in bundle)
@@ -71,14 +71,14 @@ const FLAG_MIDDLEWARE        = 1 << 6;  // 64
 const FLAG_ASYNC_TRACKING    = 1 << 7;  // 128
 
 /**
- * Synct - Type-safe state management with undo/redo and event tracking
+ * Tachyo - Type-safe state management with undo/redo and event tracking
  */
-export class SynctManager<T extends object> extends SimpleEventEmitter {
+export class TachyoManager<T extends object> extends SimpleEventEmitter {
   private _state: T;
   private _history: HistoryEntry<T>[] = [];
   private _historyIndex: number = -1;
-  private _options: Required<SynctOptions<T>>;
-  private _subscriptions: SynctSubscription<T>[] = [];
+  private _options: Required<TachyoOptions<T>>;
+  private _subscriptions: TachyoSubscription<T>[] = [];
   private _propertySubscriptions: Record<string, PropertyChangeCallback<unknown>[]> = {};
   private _propertySubscriberCount: number = 0;
   private _middleware: Middleware<T>[] = [];
@@ -91,17 +91,17 @@ export class SynctManager<T extends object> extends SimpleEventEmitter {
   private _fastPathFlags: number = 0; // Bitmask for zero-overhead hot paths
 
   /**
-   * Create a new SynctManager instance
+   * Create a new TachyoManager instance
    * @param initialState - Initial state object
-   * @param options - Configuration options for SynctManager
+   * @param options - Configuration options for TachyoManager
    * @example
    * typescript
-   * const manager = new SynctManager({ count: 0 }, {
+   * const manager = new TachyoManager({ count: 0 }, {
    *   maxHistorySize: 100,
    *   enableChangePathTracking: true
    * });
    *    */
-  constructor(initialState: T, options: SynctOptions<T> = {}) {
+  constructor(initialState: T, options: TachyoOptions<T> = {}) {
     super();
 
     // Type-safe conditional loading
@@ -202,7 +202,7 @@ export class SynctManager<T extends object> extends SimpleEventEmitter {
    */
   public setState(
     newState: Partial<T> | T,
-    metadata?: SynctUpdateMetadata
+    metadata?: TachyoUpdateMetadata
   ): void {
     const flags = this._fastPathFlags;
 
@@ -322,12 +322,12 @@ export class SynctManager<T extends object> extends SimpleEventEmitter {
               changeType: 'update',
               actionContext,
               changePath: formattedPaths,
-            } as SynctStateEvent<T>);
+            } as TachyoStateEvent<T>);
             // Skip emitStateChange for single subscriber (most don't use EventEmitter)
           }
         } else {
           // Multiple subscribers: create event once, reuse
-          const event: SynctStateEvent<T> = {
+          const event: TachyoStateEvent<T> = {
             previousState,
             currentState: currentStateSnapshot,
             changeType: 'update',
@@ -341,7 +341,7 @@ export class SynctManager<T extends object> extends SimpleEventEmitter {
           }
           
           // Emit EventEmitter events only if needed
-          this.emitSynctStateChange(event);
+          this.emitTachyoStateChange(event);
         }
       }
     }
@@ -412,13 +412,13 @@ export class SynctManager<T extends object> extends SimpleEventEmitter {
       this.createHistoryEntry('reset');
     }
 
-    const event: SynctStateEvent<T> = {
+    const event: TachyoStateEvent<T> = {
       previousState,
       currentState: { ...this._state } as T,
       changeType: 'reset',
     };
 
-    this.emitSynctStateChange(event);
+    this.emitTachyoStateChange(event);
     this.notifySubscribers(event);
   }
 
@@ -436,7 +436,7 @@ export class SynctManager<T extends object> extends SimpleEventEmitter {
     this._state = { ...this._history[this._historyIndex].state } as T;
 
     const currentSnapshot = { ...this._state } as T;
-    const event: SynctStateEvent<T> = {
+    const event: TachyoStateEvent<T> = {
       previousState,
       currentState: currentSnapshot,
       changeType: 'undo',
@@ -447,7 +447,7 @@ export class SynctManager<T extends object> extends SimpleEventEmitter {
       devTools.send('UNDO', currentSnapshot);
     }
 
-    this.emitSynctStateChange(event);
+    this.emitTachyoStateChange(event);
     this.notifySubscribers(event);
     return true;
   }
@@ -466,7 +466,7 @@ export class SynctManager<T extends object> extends SimpleEventEmitter {
     this._state = { ...this._history[this._historyIndex].state } as T;
 
     const currentSnapshot = { ...this._state } as T;
-    const event: SynctStateEvent<T> = {
+    const event: TachyoStateEvent<T> = {
       previousState,
       currentState: currentSnapshot,
       changeType: 'redo',
@@ -477,7 +477,7 @@ export class SynctManager<T extends object> extends SimpleEventEmitter {
       devTools.send('REDO', currentSnapshot);
     }
 
-    this.emitSynctStateChange(event);
+    this.emitTachyoStateChange(event);
     this.notifySubscribers(event);
     return true;
   }
@@ -515,7 +515,7 @@ export class SynctManager<T extends object> extends SimpleEventEmitter {
    * @param callback - Callback function
    * @returns Unsubscribe function
    */
-  public subscribe(callback: SynctSubscription<T>): () => void {
+  public subscribe(callback: TachyoSubscription<T>): () => void {
     if (this._subscriptions.indexOf(callback) === -1) {
       this._subscriptions.push(callback);
       if (this._subscriptions.length === 1) {
@@ -626,7 +626,7 @@ export class SynctManager<T extends object> extends SimpleEventEmitter {
    * Emit state change event
    * Optimized: Only emit if there are listeners (checked by SimpleEventEmitter.emit)
    */
-  private emitSynctStateChange(event: SynctStateEvent<T>): void {
+  private emitTachyoStateChange(event: TachyoStateEvent<T>): void {
     this.emit('state:changed', event);
     this.emit('state:update', event.currentState, event);
   }
@@ -635,7 +635,7 @@ export class SynctManager<T extends object> extends SimpleEventEmitter {
    * Notify subscribers
    * Optimized: Reuse snapshot from event instead of creating new ones
    */
-  private notifySubscribers(event: SynctStateEvent<T>): void {
+  private notifySubscribers(event: TachyoStateEvent<T>): void {
     const len = this._subscriptions.length;
     if (len === 0) return;
     // Reuse the snapshot from event to avoid creating multiple copies
@@ -896,13 +896,13 @@ export class SynctManager<T extends object> extends SimpleEventEmitter {
   }
 
   /**
-   * Destroy this SynctManager instance and release all resources.
-   * Call this when the SynctManager is no longer needed to prevent memory leaks.
+   * Destroy this TachyoManager instance and release all resources.
+   * Call this when the TachyoManager is no longer needed to prevent memory leaks.
    * @example
    * ```typescript
    * // React usage
    * useEffect(() => {
-   *   const store = new SynctManager({ ... });
+   *   const store = new TachyoManager({ ... });
    *   return () => store.destroy();
    * }, []);
    * ```

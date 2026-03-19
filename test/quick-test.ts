@@ -1,20 +1,20 @@
 /**
- * Quick test script - Run this to verify Synct works!
+ * Quick test script - Run this to verify Tachyo works!
  * 
  * Usage: npm run test:quick
  * or: npx ts-node test/quick-test.ts
  */
 
-import { SynctManager } from '../src/SynctManager';
+import { TachyoManager } from '../src/TachyoManager';
 
-console.log('🚀 Synct Quick Test\n');
+console.log('🚀 Tachyo Quick Test\n');
 console.log('='.repeat(50));
 
 // Test 1: Basic State Management
 console.log('\n📦 Test 1: Basic State Management');
-const stateManager = new SynctManager({
+const stateManager = new TachyoManager({
   count: 0,
-  name: 'Synct',
+  name: 'Tachyo',
   items: [] as string[],
 });
 
@@ -24,7 +24,7 @@ stateManager.subscribe((state, event) => {
 });
 
 stateManager.setState({ count: 1 });
-stateManager.setProperty('name', 'Synct Pro');
+stateManager.setProperty('name', 'Tachyo Pro');
 
 // Test 2: Undo/Redo
 console.log('\n⏪ Test 2: Undo/Redo');
@@ -41,7 +41,7 @@ console.log(`  After redo: ${stateManager.state.count}`);
 
 // Test 3: Change Path Tracking
 console.log('\n🔍 Test 3: Change Path Tracking');
-const complexState = new SynctManager({
+const complexState = new TachyoManager({
   user: {
     name: 'John',
     profile: {
@@ -69,7 +69,7 @@ complexState.setState({
 
 // Test 4: Async Actions
 console.log('\n⚡ Test 4: Async Actions');
-const asyncState = new SynctManager({
+const asyncState = new TachyoManager({
   data: null as { message: string } | null,
   loading: false,
   error: null as string | null,
@@ -105,7 +105,7 @@ console.log('  Executing async action...');
 
 // Test 5: Middleware
 console.log('\n🔧 Test 5: Middleware');
-const middlewareState = new SynctManager({
+const middlewareState = new TachyoManager({
   value: 0,
 }, {
   middleware: [
@@ -125,7 +125,7 @@ middlewareState.setState({ value: 100 });
 
 // Test 6: Action Chain
 console.log('\n🔗 Test 6: Action Chain');
-const chainState = new SynctManager({ step: 0 });
+const chainState = new TachyoManager({ step: 0 });
 chainState.setState({ step: 1 }, { action: 'step1' });
 chainState.setState({ step: 2 }, { action: 'step2' });
 chainState.setState({ step: 3 }, { action: 'step3' });
@@ -138,7 +138,7 @@ chain.forEach((action, i) => {
 
 // Test 7: destroy() memory management
 console.log('\n🧹 Test 7: destroy() Memory Management');
-const tempStore = new SynctManager({ x: 1 });
+const tempStore = new TachyoManager({ x: 1 });
 let callCount = 0;
 tempStore.subscribe(() => { callCount++; });
 tempStore.setState({ x: 2 }); // callCount = 1
@@ -147,4 +147,4 @@ tempStore.setState({ x: 3 }); // should NOT trigger subscriber
 console.log(`  Subscriber called ${callCount} time(s) — expected 1 ✅`);
 
 console.log('\n' + '='.repeat(50));
-console.log('✅ All tests passed! Synct is working correctly.\n');
+console.log('✅ All tests passed! Tachyo is working correctly.\n');

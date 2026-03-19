@@ -1,9 +1,9 @@
 /**
- * Examples demonstrating how Synct solves the 3 main problems
+ * Examples demonstrating how Tachyo solves the 3 main problems
  * with Event-based State Management libraries
  */
 
-import { SynctManager } from '../src/SynctManager';
+import { TachyoManager } from '../src/TachyoManager';
 import type { AsyncAction, Middleware } from '../src/types';
 
 interface UserState {
@@ -20,7 +20,7 @@ interface UserState {
 
 console.log('=== Problem #1: No State Change Path Tracking ===\n');
 
-const stateManager1 = new SynctManager<UserState>(
+const stateManager1 = new TachyoManager<UserState>(
   { name: 'John', age: 30, email: 'john@example.com', loading: false },
   {
     enableChangePathTracking: true, // ✅ Solution
@@ -45,7 +45,7 @@ stateManager1.setProperty('age', 31);
 
 console.log('\n=== Problem #2: Difficult Async Flow Debugging ===\n');
 
-const stateManager2 = new SynctManager<UserState>(
+const stateManager2 = new TachyoManager<UserState>(
   { name: 'John', age: 30, email: 'john@example.com', loading: false },
   {
     enableAsyncTracking: true, // ✅ Solution
@@ -149,7 +149,7 @@ const analyticsMiddleware: Middleware<UserState> = (state, next, action) => {
 };
 
 // Apply team-specific patterns
-const stateManager3 = new SynctManager<UserState>(
+const stateManager3 = new TachyoManager<UserState>(
   { name: 'John', age: 30, email: 'john@example.com', loading: false },
   {
     middleware: [
@@ -175,7 +175,7 @@ stateManager3.setState({ name: 'Jane' });
 
 console.log('\n=== All Problems Solved Together ===\n');
 
-const stateManager = new SynctManager<UserState>(
+const stateManager = new TachyoManager<UserState>(
   { name: 'John', age: 30, email: 'john@example.com', loading: false },
   {
     // Problem #1: No State Change Path Tracking

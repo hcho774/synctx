@@ -1,9 +1,9 @@
 import { useState, useEffect, useCallback, useRef, useSyncExternalStore } from 'react';
-import { SynctManager } from '../SynctManager';
-import type { SynctStateEvent } from '../types';
+import { TachyoManager } from '../TachyoManager';
+import type { TachyoStateEvent } from '../types';
 
 /**
- * React Hook for Synct
+ * React Hook for Tachyo
  * 
  * Handles:
  * - Zombie child problem (mounted ref check)
@@ -18,7 +18,7 @@ import type { SynctStateEvent } from '../types';
  * }
  * 
  * function MyComponent() {
- *   const { state, setState, undo, redo, canUndo, canRedo } = useSynct<UserState>({
+ *   const { state, setState, undo, redo, canUndo, canRedo } = useTachyo<UserState>({
  *     name: 'John',
  *     age: 30
  *   });
@@ -33,16 +33,16 @@ import type { SynctStateEvent } from '../types';
  * }
  * ```
  */
-export function useSynct<T extends object>(
+export function useTachyo<T extends object>(
   initialState: T,
-  options?: import('../types').SynctOptions<T>
+  options?: import('../types').TachyoOptions<T>
 ) {
-  const managerRef = useRef<SynctManager<T> | null>(null);
+  const managerRef = useRef<TachyoManager<T> | null>(null);
   const mountedRef = useRef(false);
   const renderRef = useRef(0);
   
   if (!managerRef.current) {
-    managerRef.current = new SynctManager(initialState, options);
+    managerRef.current = new TachyoManager(initialState, options);
   }
 
   const manager = managerRef.current;
@@ -56,7 +56,7 @@ export function useSynct<T extends object>(
         renderRef.current += 1;
         const currentRender = renderRef.current;
         
-        const unsubscribe = manager.subscribe((newState: T, event: SynctStateEvent<T>) => {
+        const unsubscribe = manager.subscribe((newState: T, event: TachyoStateEvent<T>) => {
           // Triple check: mounted + same render
           if (mountedRef.current && renderRef.current === currentRender) {
             onStoreChange();
@@ -142,8 +142,8 @@ export function useSynct<T extends object>(
  * 
  * Handles zombie child problem and React concurrency
  */
-export function useSynctProperty<T extends object, K extends keyof T>(
-  manager: SynctManager<T>,
+export function useTachyoProperty<T extends object, K extends keyof T>(
+  manager: TachyoManager<T>,
   property: K
 ): T[K] {
   const mountedRef = useRef(false);

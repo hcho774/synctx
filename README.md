@@ -1,13 +1,13 @@
-# synct
+# tachyo
 
 🎯 State management with built-in undo/redo and change tracking
 
-[![npm version](https://badge.fury.io/js/synct.svg)](https://www.npmjs.com/package/synct)
+[![npm version](https://badge.fury.io/js/tachyo.svg)](https://www.npmjs.com/package/tachyo)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 > Type-safe state management with automatic undo/redo, event tracking, and React integration
 
-synct provides built-in undo/redo, change path tracking, and async flow debugging in a single package.
+tachyo provides built-in undo/redo, change path tracking, and async flow debugging in a single package.
 
 ## Installation
 
@@ -18,9 +18,9 @@ npm install tachyo
 ## Quick Start
 
 ```typescript
-import { SynctManager } from 'tachyo';
+import { TachyoManager } from 'tachyo';
 
-const store = new SynctManager({ count: 0 }, { autoSnapshot: true });
+const store = new TachyoManager({ count: 0 }, { autoSnapshot: true });
 
 store.subscribe((state, event) => {
   console.log('Changed:', event.changePath);
@@ -35,10 +35,10 @@ store.redo(); // Forward to count: 2
 ## React Integration
 
 ```tsx
-import { useSynct } from 'tachyo/react';
+import { useTachyo } from 'tachyo/react';
 
 function Counter() {
-  const { state, setState, undo, redo, canUndo, canRedo } = useSynct(
+  const { state, setState, undo, redo, canUndo, canRedo } = useTachyo(
     { count: 0 },
     { autoSnapshot: true }
   );
@@ -61,7 +61,7 @@ function Counter() {
 Automatic history management — enable `autoSnapshot` and every `setState` call is tracked.
 
 ```typescript
-const store = new SynctManager({ count: 0 }, { autoSnapshot: true });
+const store = new TachyoManager({ count: 0 }, { autoSnapshot: true });
 
 store.setState({ count: 1 });
 store.setState({ count: 2 });
@@ -80,7 +80,7 @@ store.redo(); // Forward to count: 2
 Track exactly which properties changed, where, and how. Enable `enableChangePathTracking` to activate.
 
 ```typescript
-const store = new SynctManager(initialState, {
+const store = new TachyoManager(initialState, {
   enableChangePathTracking: true,
   enableStackTrace: true, // also captures caller name
 });
@@ -140,7 +140,7 @@ const completed = store.getCompletedAsyncActions();
 Track complete action chains with parent-child relationships.
 
 ```typescript
-const store = new SynctManager({ step: 0 }, { enableStackTrace: true });
+const store = new TachyoManager({ step: 0 }, { enableStackTrace: true });
 
 store.setState({ step: 1 }, { action: 'loadData' });
 store.setState({ step: 2 }, { action: 'validateForm' });
@@ -160,14 +160,14 @@ Works with React, Vue, and vanilla JavaScript.
 
 ```typescript
 // React
-import { useSynct } from 'tachyo/react';
+import { useTachyo } from 'tachyo/react';
 
 // Vue (coming soon)
-// import { useSynct } from 'synct/vue';
+// import { useTachyo } from 'tachyo/vue';
 
 // Vanilla JS - no framework needed!
-import { SynctManager } from 'tachyo';
-const store = new SynctManager({ count: 0 });
+import { TachyoManager } from 'tachyo';
+const store = new TachyoManager({ count: 0 });
 ```
 
 **Benefits:**
@@ -177,7 +177,7 @@ const store = new SynctManager({ count: 0 });
 
 ### 🏎️ Blazing Fast Performance
 
-**synct** is carefully designed and V8 micro-optimized directly at the physical JS engine allocation limits.
+**tachyo** is carefully designed and V8 micro-optimized directly at the physical JS engine allocation limits.
 
 - **12.2+ Million ops/sec** for simple state modifications.
 - **18.4+ Million ops/sec** for history navigation (Undo/Redo).
@@ -189,7 +189,7 @@ It consistently matches or beats ultra-minimal libraries (like Zustand) while ca
 Lightweight with no external dependencies.
 
 ```typescript
-// synct: Zero dependencies
+// tachyo: Zero dependencies
 // - Custom EventEmitter (no 'events' package)
 // - All utilities included
 // - Tree-shaking friendly
@@ -223,7 +223,7 @@ const analyticsMiddleware = (state, next, action) => {
 };
 
 // Use all together
-const store = new SynctManager(initialState, {
+const store = new TachyoManager(initialState, {
   middleware: [loggingMiddleware, validationMiddleware, analyticsMiddleware],
 });
 ```
@@ -231,14 +231,14 @@ const store = new SynctManager(initialState, {
 ## Complete example
 
 ```tsx
-import { useSynct } from 'tachyo/react';
+import { useTachyo } from 'tachyo/react';
 
 interface TodoState {
   todos: { id: string; text: string; completed: boolean }[];
 }
 
 function TodoApp() {
-  const { state, setState, undo, redo, canUndo, canRedo } = useSynct<TodoState>(
+  const { state, setState, undo, redo, canUndo, canRedo } = useTachyo<TodoState>(
     { todos: [] },
     { autoSnapshot: true }
   );
@@ -278,9 +278,9 @@ function TodoApp() {
 ## Vanilla usage (outside React)
 
 ```typescript
-import { SynctManager } from 'tachyo';
+import { TachyoManager } from 'tachyo';
 
-const gameStore = new SynctManager(
+const gameStore = new TachyoManager(
   { score: 0, level: 1, lives: 3 },
   { autoSnapshot: true, enableChangePathTracking: true }
 );
@@ -322,16 +322,16 @@ gameStore.subscribeToProperty('score', (newScore, oldScore) => {
 
 ## Using with TypeScript
 
-synct is written in TypeScript and works best with it. No special TypeScript types needed!
+tachyo is written in TypeScript and works best with it. No special TypeScript types needed!
 
 ```typescript
-import { SynctManager } from 'tachyo';
+import { TachyoManager } from 'tachyo';
 
 interface ShoppingCartState {
   items: { id: string; name: string; price: number; quantity: number }[];
 }
 
-const cartStore = new SynctManager<ShoppingCartState>({ items: [] });
+const cartStore = new TachyoManager<ShoppingCartState>({ items: [] });
 
 const addItem = (item: { id: string; name: string; price: number }) => {
   cartStore.setState({
@@ -352,10 +352,10 @@ cartStore.setState({ items: [] }); // ✅
 
 ## Redux DevTools
 
-synct automatically integrates with Redux DevTools Extension when available. Just use synct normally!
+tachyo automatically integrates with Redux DevTools Extension when available. Just use tachyo normally!
 
 ```typescript
-const editorStore = new SynctManager({ content: '', fontSize: 16 });
+const editorStore = new TachyoManager({ content: '', fontSize: 16 });
 
 editorStore.setState({ content: 'Hello World' });
 editorStore.setState({ fontSize: 18 });
@@ -382,7 +382,7 @@ const validationMiddleware = (state, next, action) => {
   }
 };
 
-const gameStore = new SynctManager(initialState, {
+const gameStore = new TachyoManager(initialState, {
   middleware: [loggingMiddleware, validationMiddleware],
 });
 
@@ -425,7 +425,7 @@ const completed = editorStore.getCompletedAsyncActions();
 ## Options
 
 ```typescript
-const store = new SynctManager(initialState, {
+const store = new TachyoManager(initialState, {
   maxHistorySize: 100,            // Maximum undo/redo steps (default: 50)
   enableDeepEquality: false,      // Deep equality for change detection (default: false)
   autoSnapshot: false,            // Save history on every setState (default: false)
@@ -439,7 +439,7 @@ const store = new SynctManager(initialState, {
 
 ## Comparison with other libraries
 
-| Feature | synct | Zustand | Zundo | Jotai | Redux |
+| Feature | tachyo | Zustand | Zundo | Jotai | Redux |
 |---------|-------|---------|-------|-------|-------|
 | **Automatic Undo/Redo** | ✅ Core | ❌ | ✅* | ❌ | ❌** |
 | **Change Path Tracking** | ✅ | ❌ | ❌ | ❌ | ❌ |
@@ -455,7 +455,7 @@ const store = new SynctManager(initialState, {
 *Zundo requires Zustand (separate library)  
 **Redux requires Redux Undo (separate library)
 
-## When to Use synct?
+## When to Use tachyo?
 
 ### ✅ Perfect For:
 
@@ -505,4 +505,4 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 ---
 
-**synct** - State management with built-in undo/redo, change tracking, and async debugging 🎯
+**tachyo** - State management with built-in undo/redo, change tracking, and async debugging 🎯

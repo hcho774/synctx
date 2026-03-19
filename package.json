@@ -47,11 +47,11 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/hcho774/synct.git"
+    "url": "https://github.com/hcho774/tachyo.git"
   },
-  "homepage": "https://github.com/hcho774/synct#readme",
+  "homepage": "https://github.com/hcho774/tachyo#readme",
   "bugs": {
-    "url": "https://github.com/hcho774/synct/issues"
+    "url": "https://github.com/hcho774/tachyo/issues"
   },
   "devDependencies": {
     "@types/jest": "^30.0.0",
