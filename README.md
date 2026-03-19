@@ -439,18 +439,18 @@ const store = new TachyoManager(initialState, {
 
 ## Comparison with other libraries
 
-| Feature | tachyo | Zustand | Zundo | Jotai | Redux |
-|---------|-------|---------|-------|-------|-------|
-| **Automatic Undo/Redo** | ✅ Core | ❌ | ✅* | ❌ | ❌** |
-| **Change Path Tracking** | ✅ | ❌ | ❌ | ❌ | ❌ |
-| **Async Action Tracking** | ✅ | ❌ | ❌ | ❌ | ❌ |
-| **Redux DevTools** | ✅ | ⚠️ | ⚠️ | ⚠️ | ✅ |
-| **Performance (ops/sec)**| **~12.2M** | ~9M | N/A | ? | ~8.4M |
-| **Simple API** | ✅ | ✅ | ✅ | ✅ | ❌ |
-| **Type Safety** | ✅ | ✅ | ✅ | ✅ | ✅ |
-| **Zero Dependencies** | ✅ | ✅ | ✅ | ⚠️ | ❌ |
-| **Framework Agnostic** | ✅ | ✅ | ❌ | ❌ | ✅ |
-| **Bundle Size** | ✅ (~5-8KB) | ✅ (~1KB) | ✅ (~700B) | ✅ (~2KB) | ❌ (~15KB+) |
+| Feature | tachyo | Zustand | Zundo | Redux |
+|---------|-------|---------|-------|-------|
+| **Automatic Undo/Redo** | ✅ Core | ❌ | ✅* | ❌** |
+| **Change Path Tracking** | ✅ | ❌ | ❌ | ❌ |
+| **Async Action Tracking** | ✅ | ❌ | ❌ | ❌ |
+| **Redux DevTools** | ✅ | ⚠️ | ⚠️ | ✅ |
+| **Performance (ops/sec)**| **~12.2M** | ~9M | N/A | ~8.4M |
+| **Simple API** | ✅ | ✅ | ✅ | ❌ |
+| **Type Safety** | ✅ | ✅ | ✅ | ✅ |
+| **Zero Dependencies** | ✅ | ✅ | ✅ | ❌ |
+| **Framework Agnostic** | ✅ | ✅ | ❌ | ✅ |
+| **Bundle Size** | ✅ (~5-8KB) | ✅ (~1KB) | ✅ (~700B) | ❌ (~15KB+) |
 
 *Zundo requires Zustand (separate library)  
 **Redux requires Redux Undo (separate library)
