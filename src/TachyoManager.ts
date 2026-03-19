@@ -136,6 +136,8 @@ export class TachyoManager<T extends object> extends SimpleEventEmitter {
       enableAsyncTracking: options.enableAsyncTracking ?? true,
       enableStackTrace: options.enableStackTrace ?? false,
       middleware: options.middleware ?? [],
+      enableDevTools: options.enableDevTools ?? false,
+      enableTachyoExtension: options.enableTachyoExtension ?? false,
     };
 
     let flags = 0;
@@ -165,6 +167,33 @@ export class TachyoManager<T extends object> extends SimpleEventEmitter {
         this._fastPathFlags |= FLAG_DEVTOOLS;
         devTools.send('@@INIT', { ...this._state });
       }
+    }
+
+    // Initialize custom Tachyo Chrome Extension bridge (Zero-overhead native window.postMessage)
+    if (this._options.enableTachyoExtension && typeof window !== 'undefined') {
+      // 1. Send Initial Connection Payload
+      window.postMessage({
+        source: 'tachyo-extension-bridge',
+        type: 'TACHYO_INIT',
+        payload: { state: this._state, timestamp: Date.now() }
+      }, '*');
+
+      // 2. Automatically listen to every engine tick and broadcast diffs
+      this.subscribe((state, event) => {
+        window.postMessage({
+          source: 'tachyo-extension-bridge',
+          type: 'TACHYO_STATE_UPDATE',
+          payload: {
+            action: event.actionContext?.name || event.changeType,
+            description: event.actionContext?.metadata?.description,
+            currentState: event.currentState,
+            previousState: event.previousState,
+            changeType: event.changeType,
+            changePaths: event.changePath || [], // The exact JSON Diff Payload!
+            timestamp: Date.now()
+          }
+        }, '*');
+      });
     }
   }
 

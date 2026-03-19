@@ -150,6 +150,19 @@ export interface TachyoOptions<T = unknown> {
    * Default: []
    */
   middleware?: Middleware<T>[];
+
+  /**
+   * Enable built-in Redux DevTools Chrome Extension bridging
+   * Default: false
+   */
+  enableDevTools?: boolean;
+
+  /**
+   * Enable dedicated Tachyo Chrome Web Store Extension bridging
+   * Broadcasts native JSON Diff payloads via window.postMessage
+   * Default: false
+   */
+  enableTachyoExtension?: boolean;
 }
 
 /**
